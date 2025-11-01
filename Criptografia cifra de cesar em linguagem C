@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int Pa(int A, int R) {
+    // soma dos 10 primeiros termos da PA: n/2 * [2A + (n-1)R], com n=10
+    int n = 10;
+    return n * (2 * A + (n - 1) * R) / 2;
+}
+
+int main(void) {
+    int i, j, g, shinum, soma, rot;
+    char alfa[26]   = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+    char shiAlf[26];
+    char cript[26];
+    char palavra[15];
+
+    printf("digite um shift para criptografia: \n");
+    if (scanf("%d", &shinum) != 1) return 1;
+
+    printf("digite uma palavra para criptograva: \n");
+    if (scanf("%14s", palavra) != 1) return 1;
+
+    for (i = 0; palavra[i]; i++) palavra[i] = (char)tolower((unsigned char)palavra[i]);
+
+    for (i = 0; i < 26; i++) {
+        shiAlf[i] = alfa[(i + (shinum % 26) + 26) % 26];
+    }
+
+    printf("digite um razao da PA regra(abaixo de 10): \n");
+    if (scanf("%d", &g) != 1) return 1;
+
+    soma = Pa(g, g);
+    rot  = ((soma % 26) + 26) % 26;
+
+    for (i = 0; i < 26; i++) {
+        cript[i] = shiAlf[(i + rot) % 26];
+    }
+
+    printf("Palavra criptografada:\n");
+    for (i = 0; palavra[i] != '\0'; i++) {
+        char c = palavra[i];
+        if (!isalpha((unsigned char)c)) { putchar(c); continue; }
+        for (j = 0; j < 26; j++) {
+            if (c == alfa[j]) { putchar(cript[j]); break; }
+        }
+        if (j == 26) putchar(c);
+    }
+    putchar('\n');
+
+    return 0;
+}
